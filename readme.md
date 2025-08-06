@@ -1,4 +1,3 @@
-```markdown
 # Video Summarizer AI
 
 This project implements an agentic AI system to extract, transcribe, OCR, and summarize video content. It uses modern generative AI models combined with multi-agent orchestration to produce both concise summaries and detailed documentation from multiple input modalities.
