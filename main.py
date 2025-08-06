@@ -70,7 +70,6 @@ def main():
         )
         print("Summarizing the video...")
         final_output = video_summarizer.summarize()
-        print_final_output(final_output)
 
 
     # === Step 5: Build vector store ===
@@ -82,6 +81,19 @@ def main():
         doc_paths = [ocr_text_path, transcription_path]
         vector_store_builder.build_and_save(doc_paths, vector_store_path)
         print(f"Vector store saved at: {vector_store_path}")
+
+    # === Step 6: Optional Question Answering ===
+    user_input = input("Do you want to ask a question about the video? (yes/no): ").strip().lower()
+    if user_input == "yes":
+        question_answerer = QuestionAnswerer(vector_store_path)
+        while True:
+            question = input("Enter your question (or type 'quit' to exit): ").strip()
+            if question.lower() == "quit":
+                break
+            answer = question_answerer.ask(question)
+            print("\n=== ANSWER ===\n")
+            print(answer)
+
 
 
 
