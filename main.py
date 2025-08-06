@@ -1,7 +1,7 @@
 from my_utils import extract_audio_from_video
 from audio_processor import transcribe_audio
 from video_text_processor import extract_frames_from_video, ocr_extract_text_from_frames, remove_repeated_text
-from agentic_system import summarize_video
+from summary_creator import summarize_video
 import os
 
 
