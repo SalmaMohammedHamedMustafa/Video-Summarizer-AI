@@ -1,1 +1,1 @@
-from .summary_creator import summarize_video
+from .summary_creator import VideoSummarizer

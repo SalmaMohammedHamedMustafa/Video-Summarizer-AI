@@ -1,1 +1,1 @@
-from .video_text_processor import extract_frames_from_video, ocr_extract_text_from_frames, remove_repeated_text
+from .video_text_processor import VideoTextProcessor

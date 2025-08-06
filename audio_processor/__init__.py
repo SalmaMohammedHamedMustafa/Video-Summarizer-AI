@@ -1,1 +1,1 @@
-from .audio_processor import transcribe_audio
+from .audio_processor import AudioProcessor

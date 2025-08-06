@@ -1,7 +1,9 @@
 from my_utils import extract_audio_from_video
-from audio_processor import transcribe_audio
-from video_text_processor import extract_frames_from_video, ocr_extract_text_from_frames, remove_repeated_text
-from summary_creator import summarize_video
+from audio_processor import AudioProcessor
+from video_text_processor import VideoTextProcessor
+from summary_creator import VideoSummarizer
+from vector_store_builder import VectorStoreBuilder
+from question_answerer import QuestionAnswerer
 import os
 
 
@@ -21,6 +23,9 @@ def main():
     audio_path = f"audios/{base_name}.mp3"
     transcription_path = f"transcriptions/{base_name}_transcription.txt"
     ocr_text_path = f"video_texts/{base_name}_texts.txt"
+    summary_path = f"results/{base_name}_summary.txt"
+    full_doc_path = f"results/{base_name}_full_doc.txt"
+    vector_store_path = f"vector_stores/{base_name}_vector_store"
 
     # === Step 1: Extract audio ===
     if os.path.exists(audio_path):
@@ -33,8 +38,9 @@ def main():
     if os.path.exists(transcription_path):
         print("Transcription already exists. Skipping transcription.")
     else:
+        audio_processor = AudioProcessor(model_name="small")
         print("Transcribing audio...")
-        transcription = transcribe_audio(audio_path, model_name="small", chunk_duration=30)
+        transcription = audio_processor.transcribe(audio_path, chunk_duration=30)
         os.makedirs("transcriptions", exist_ok=True)
         with open(transcription_path, "w") as f:
             f.write(transcription)
@@ -43,21 +49,39 @@ def main():
     if os.path.exists(ocr_text_path):
         print("OCR already exists. Skipping OCR.")
     else:
+        video_text_processor = VideoTextProcessor(video_path, interval=3)
         print("Extracting frames and performing OCR...")
-        frames = extract_frames_from_video(video_path, interval=3)
-        texts = ocr_extract_text_from_frames(frames)
-        unique_texts = remove_repeated_text(texts)
+        frames = video_text_processor.extract_frames()
+        texts = video_text_processor.ocr_extract_text()
+        unique_texts = video_text_processor.remove_repeated_text()
         os.makedirs("video_texts", exist_ok=True)
         with open(ocr_text_path, "w") as f:
             f.writelines(unique_texts)
 
     # === Step 4: Summarize ===
-    print("Summarizing the video...")
-    final_output = summarize_video(
-        ocr_path=ocr_text_path,
-        transcript_path=transcription_path
-    )
-    print_final_output(final_output)
+    if os.path.exists(summary_path) and os.path.exists(full_doc_path):
+        print("Summary and full documentation already exist. Skipping summarization.")
+    else:
+        video_summarizer = VideoSummarizer(
+            ocr_path=ocr_text_path,
+            transcript_path=transcription_path,
+            summary_out=summary_path,
+            full_doc_out=full_doc_path
+        )
+        print("Summarizing the video...")
+        final_output = video_summarizer.summarize()
+        print_final_output(final_output)
+
+
+    # === Step 5: Build vector store ===
+    if os.path.exists(vector_store_path):
+        print("Vector store already exists. Skipping vector store creation.")
+    else:
+        vector_store_builder = VectorStoreBuilder()
+        print("Building vector store...")
+        doc_paths = [ocr_text_path, transcription_path]
+        vector_store_builder.build_and_save(doc_paths, vector_store_path)
+        print(f"Vector store saved at: {vector_store_path}")
 
 
 
