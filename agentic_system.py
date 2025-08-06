@@ -24,7 +24,7 @@ def summarize_video(
 
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
     genai.configure(api_key=GOOGLE_API_KEY)
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0,  convert_system_message_to_human=True)
 
     SYSTEM_CONTEXT = """
     You are an AI system tasked with processing and summarizing technical video content, using two data sources:
@@ -113,10 +113,16 @@ suitable for use as a reference document.""")
         with open(full_doc_out, "w") as f:
             f.write(full_doc)
 
-        return {
+
+        final_output = {
             "summary": summary_text,
             "full_documentation": full_doc,
+            "ocr_summary": ocr_summary,
+            "transcript_doc": transcript_doc,
         }
+
+        
+        return final_output
 
     # === LangGraph setup ===
     builder = StateGraph(VideoSummarizationState)

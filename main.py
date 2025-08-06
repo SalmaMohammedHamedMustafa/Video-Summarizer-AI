@@ -4,6 +4,13 @@ from video_text_processor import extract_frames_from_video, ocr_extract_text_fro
 from agentic_system import summarize_video
 import os
 
+
+def print_final_output(final_output):
+    for key, value in final_output.items():
+        print(f"\n=== {key.upper()} ===\n")
+        print(value)
+        print("\n" + "="*40)  # separator line for readability
+
 def main():
 
 
@@ -46,10 +53,12 @@ def main():
 
     # === Step 4: Summarize ===
     print("Summarizing the video...")
-    summarize_video(
+    final_output = summarize_video(
         ocr_path=ocr_text_path,
         transcript_path=transcription_path
     )
+    print_final_output(final_output)
+
 
 
 if __name__ == "__main__":
