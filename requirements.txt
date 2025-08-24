@@ -1,11 +1,10 @@
-langchain-google-genai==0.0.1                 # Gemini API integration with LangChain
-langgraph==0.0.63                             # LangGraph for agentic workflow orchestration
-google-generativeai                    # Google Gemini API Python client
-whisper==1.0                                  # Whisper for audio transcription (openai/whisper)
-librosa==0.10.0                              # Audio processing (librosa)
+langchain-google-genai==2.1.8                # Gemini API integration with LangChain
+langgraph==0.6.3                             # LangGraph for agentic workflow orchestration
+google-generativeai==0.8.5                   # Google Gemini API Python client
+openai-whisper==20240930                     # Whisper for audio transcription (openai/whisper)
+librosa==0.11.0                              # Audio processing (librosa)
 numpy==1.26.4                                # Numeric computing
 tqdm==4.67.1                                 # Progress bars for transcription
 moviepy==2.2.1                               # Video/audio extraction utilities
-opencv-python==4.7.0.72                       # OCR frame extraction (OpenCV)
-pytesseract==0.3.10                          # Python wrapper for Tesseract OCR
-openai-whisper
+opencv-python==4.11.0.86                      # OCR frame extraction (OpenCV)
+pytesseract==0.3.13                        # Python wrapper for Tesseract OCR
