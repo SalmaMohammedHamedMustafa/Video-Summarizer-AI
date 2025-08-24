@@ -14,7 +14,7 @@ def print_final_output(final_output):
         print("\n" + "="*40)  # separator line for readability
 
 def main():
-
+    
 
     video_path = input("Enter the path to the video file: ").strip()
 
@@ -26,6 +26,13 @@ def main():
     summary_path = f"results/{base_name}_summary.txt"
     full_doc_path = f"results/{base_name}_full_doc.txt"
     vector_store_path = f"vector_stores/{base_name}_vector_store"
+
+    # create any non-existing directories
+    os.makedirs("audios", exist_ok=True)
+    os.makedirs("transcriptions", exist_ok=True)
+    os.makedirs("video_texts", exist_ok=True)
+    os.makedirs("results", exist_ok=True)
+    os.makedirs("vector_stores", exist_ok=True)
 
     # === Step 1: Extract audio ===
     if os.path.exists(audio_path):
