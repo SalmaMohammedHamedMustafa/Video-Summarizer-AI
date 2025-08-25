@@ -19,7 +19,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment vars
-ENV GOOGLE_API_KEY="AIzaSyDdHXpkoF_v8lXFKwz1ce3DeuuIVkW6q9I"
+ENV GOOGLE_API_KEY="your-GOOGLE_API_KEY"
 
 
 #copy the rest 
